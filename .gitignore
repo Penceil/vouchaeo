@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# per-machine Claude Code permissions, not project config
+.claude/settings.local.json
+
+# pre-redesign snapshot of the old site
+.backup-pre-figma/
