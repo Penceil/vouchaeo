@@ -4,6 +4,27 @@
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* --- Form delivery ---------------------------------------------------------
+   Submissions are emailed by Web3Forms. The recipient address is baked into
+   the access key, so it can only ever deliver to the inbox that key was
+   issued for — it is safe to ship in client-side code.
+   -------------------------------------------------------------------------- */
+const WEB3FORMS_KEY = '3a70cbdc-7118-4855-aca0-bbb1ed94e8bc';
+
+async function sendToInbox(fields) {
+  const response = await fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ access_key: WEB3FORMS_KEY, ...fields }),
+  });
+
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || `Delivery failed (${response.status})`);
+  }
+  return result;
+}
+
 /* --- Hero: rotate the AI platform lockup every 2s -------------------------- */
 (function initBrandRotator() {
   const rotator = document.getElementById('brand-rotator');
@@ -339,15 +360,54 @@ const Modals = (function initModals() {
       return;
     }
 
-    // finished
-    const data = new FormData(form);
-    const email = String(data.get('email') || '').trim();
-    form.querySelector('[data-done-email]').textContent = email || 'you';
-
-    steps.forEach((s) => s.classList.remove('is-active'));
-    actions.hidden = true;
-    done.classList.add('is-active');
+    // finished — deliver it, then show the confirmation
+    submit(step);
   });
+
+  async function submit(step) {
+    const error = step.querySelector('[data-error]');
+    const data = new FormData(form);
+    const get = (k) => String(data.get(k) || '').trim();
+    const email = get('email');
+    const name = `${get('firstName')} ${get('lastName')}`.trim();
+
+    error.textContent = '';
+    nextBtn.setAttribute('aria-busy', 'true');
+    nextBtn.textContent = 'Sending…';
+
+    try {
+      await sendToInbox({
+        subject: `New demo request — ${name || email} (${get('company') || 'no company'})`,
+        from_name: name || 'vouchaeo website',
+        replyto: email,
+        botcheck: data.get('botcheck') ? 'true' : '',
+        'What brings them here': get('intent'),
+        'First name': get('firstName'),
+        'Last name': get('lastName'),
+        'Work email': email,
+        Phone: get('phone') || '—',
+        Agency: get('company'),
+        Website: get('website'),
+        'Team size': get('teamSize'),
+        Role: get('role'),
+        'Primary specialty': get('specialty') || '—',
+        'Where did they find us': get('source'),
+        Notes: get('notes') || '—',
+        'Consented to terms': data.get('consent') ? 'yes' : 'no',
+        'Submitted from': window.location.href,
+      });
+
+      form.querySelector('[data-done-email]').textContent = email || 'you';
+      steps.forEach((s) => s.classList.remove('is-active'));
+      actions.hidden = true;
+      done.classList.add('is-active');
+    } catch (err) {
+      error.textContent = `We could not send that — ${err.message}. Please try again, or email hey@vouchaeo.com.`;
+    } finally {
+      nextBtn.removeAttribute('aria-busy');
+      render();
+    }
+  }
 
   backBtn.addEventListener('click', () => {
     if (current === 1) return;
@@ -423,24 +483,64 @@ const Modals = (function initModals() {
   });
 })();
 
-/* --- Email capture forms -------------------------------------------------- */
-(function initForms() {
-  document.querySelectorAll('.waitlist, .newsletter').forEach((form) => {
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+/* --- Hero email capture: hand off to the demo wizard, prefilled ------------ */
+(function initWaitlist() {
+  const form = document.querySelector('.waitlist');
+  if (!form) return;
 
-      const input = form.querySelector('input[type="email"]');
-      if (!input || !input.value) return;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-      if (form.classList.contains('waitlist')) {
-        Modals.show('demo-modal');
-        const target = document.querySelector('#demo-form input[name="email"]');
-        if (target) target.value = input.value;
-      }
+    const input = form.querySelector('input[type="email"]');
+    if (!input?.value) return;
 
+    Modals.show('demo-modal');
+    const target = document.querySelector('#demo-form input[name="email"]');
+    if (target) target.value = input.value;
+
+    input.value = '';
+    input.blur();
+  });
+})();
+
+/* --- Footer newsletter ---------------------------------------------------- */
+(function initNewsletter() {
+  const form = document.querySelector('.newsletter');
+  if (!form) return;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const input = form.querySelector('input[type="email"]');
+    const email = input?.value.trim();
+    if (!email) return;
+
+    form.classList.remove('is-error', 'is-sent');
+    form.setAttribute('aria-busy', 'true');
+    input.disabled = true;
+    input.placeholder = 'Sending…';
+
+    try {
+      await sendToInbox({
+        subject: `New newsletter signup — ${email}`,
+        from_name: 'vouchaeo website',
+        replyto: email,
+        botcheck: new FormData(form).get('botcheck') ? 'true' : '',
+        'Work email': email,
+        Source: 'Footer newsletter',
+        'Submitted from': window.location.href,
+      });
+
+      form.classList.add('is-sent');
       input.value = '';
-      input.placeholder = 'Thanks — we’ll be in touch.';
+      input.placeholder = 'Thanks — you’re on the list.';
+    } catch {
+      form.classList.add('is-error');
+      input.placeholder = 'Could not send — please try again.';
+    } finally {
+      form.removeAttribute('aria-busy');
+      input.disabled = false;
       input.blur();
-    });
+    }
   });
 })();
