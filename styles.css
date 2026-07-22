@@ -1819,6 +1819,8 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .wiz__error { min-height: 18px; font-size: 12.6px; color: var(--coral); }
 .wiz__error:empty { min-height: 0; }
 
+/* the author display rule would otherwise beat the [hidden] attribute */
+.wiz__actions[hidden] { display: none; }
 .wiz__actions {
   flex: none;
   display: flex;

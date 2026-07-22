@@ -280,12 +280,16 @@ const Modals = (function initModals() {
 
   let current = 1;
 
+  function nextLabel() {
+    return current === total
+      ? 'Book my demo<span class="btn-solid__arrow">→</span>'
+      : 'Continue<span class="btn-solid__arrow">→</span>';
+  }
+
   function render() {
     steps.forEach((step) => step.classList.toggle('is-active', Number(step.dataset.step) === current));
     backBtn.hidden = current === 1;
-    nextBtn.innerHTML = current === total
-      ? 'Book my demo<span class="btn-solid__arrow">→</span>'
-      : 'Continue<span class="btn-solid__arrow">→</span>';
+    nextBtn.innerHTML = nextLabel();
     bar.style.width = `${(current / total) * 100}%`;
     counter.textContent = String(current);
   }
@@ -401,11 +405,13 @@ const Modals = (function initModals() {
       steps.forEach((s) => s.classList.remove('is-active'));
       actions.hidden = true;
       done.classList.add('is-active');
+      form.closest('.modal__panel')?.scrollTo({ top: 0 });
     } catch (err) {
       error.textContent = `We could not send that — ${err.message}. Please try again, or email hey@vouchaeo.com.`;
     } finally {
+      // restore the button only — render() would re-show the step we just left
       nextBtn.removeAttribute('aria-busy');
-      render();
+      nextBtn.innerHTML = nextLabel();
     }
   }
 
