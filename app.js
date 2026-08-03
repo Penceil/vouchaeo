@@ -1,5 +1,5 @@
 /* ==========================================================================
-   vouchaeo — interactions
+   Laud — interactions
    ========================================================================== */
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -25,20 +25,20 @@ async function sendToInbox(fields) {
   return result;
 }
 
-/* --- Hero: rotate the AI platform lockup every 2s -------------------------- */
-(function initBrandRotator() {
-  const rotator = document.getElementById('brand-rotator');
+/* --- Hero: rotate the engine name strip every 2s --------------------------- */
+(function initEngineRotator() {
+  const rotator = document.getElementById('engine-rotator');
   if (!rotator) return;
 
-  const brands = [...rotator.querySelectorAll('.brand')];
-  if (brands.length < 2 || reduceMotion) return;
+  const engines = [...rotator.querySelectorAll('.engine')];
+  if (engines.length < 2 || reduceMotion) return;
 
   let index = 0;
 
   setInterval(() => {
-    const current = brands[index];
-    index = (index + 1) % brands.length;
-    const next = brands[index];
+    const current = engines[index];
+    index = (index + 1) % engines.length;
+    const next = engines[index];
 
     current.classList.remove('is-active');
     current.classList.add('is-leaving');
@@ -46,6 +46,24 @@ async function sendToInbox(fields) {
 
     setTimeout(() => current.classList.remove('is-leaving'), 450);
   }, 2000);
+})();
+
+/* --- Smooth-scroll CTAs to the visibility checker -------------------------- */
+(function initScrollButtons() {
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-scroll]');
+    if (!trigger) return;
+
+    event.preventDefault();
+    const target = document.getElementById(trigger.dataset.scroll);
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+
+    // drop focus onto the first empty field so they can start typing
+    const first = [...target.querySelectorAll('input')].find((i) => !i.value) || target.querySelector('input');
+    if (first) setTimeout(() => first.focus({ preventScroll: true }), reduceMotion ? 0 : 500);
+  });
 })();
 
 /* --- Mobile navigation ---------------------------------------------------- */
@@ -105,6 +123,9 @@ async function sendToInbox(fields) {
     });
   }
 
+  // let the checker replay whichever pane is showing after it personalizes it
+  window.__replayPane = play;
+
   function select(name) {
     tabs.forEach((tab) => {
       const active = tab.dataset.tab === name;
@@ -158,6 +179,27 @@ async function sendToInbox(fields) {
   }, { threshold: 0.35 });
 
   io.observe(chart);
+})();
+
+/* --- Reveal-on-scroll: dashboard + proof bars animate when they enter view - */
+(function initReveals() {
+  const targets = [...document.querySelectorAll('.dash, .proof-sec')];
+  if (!targets.length) return;
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    targets.forEach((el) => el.classList.add('is-in'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.3 });
+
+  targets.forEach((el) => io.observe(el));
 })();
 
 /* --- Six AI Agents: sync the stacked module visual with the active agent --- */
@@ -382,7 +424,7 @@ const Modals = (function initModals() {
     try {
       await sendToInbox({
         subject: `New demo request — ${name || email} (${get('company') || 'no company'})`,
-        from_name: name || 'vouchaeo website',
+        from_name: name || 'Laud website',
         replyto: email,
         botcheck: data.get('botcheck') ? 'true' : '',
         'What brings them here': get('intent'),
@@ -407,7 +449,7 @@ const Modals = (function initModals() {
       done.classList.add('is-active');
       form.closest('.modal__panel')?.scrollTo({ top: 0 });
     } catch (err) {
-      error.textContent = `We could not send that — ${err.message}. Please try again, or email hey@vouchaeo.com.`;
+      error.textContent = `We could not send that — ${err.message}. Please try again, or email hey@getlaude.com.`;
     } finally {
       // restore the button only — render() would re-show the step we just left
       nextBtn.removeAttribute('aria-busy');
@@ -446,7 +488,7 @@ const Modals = (function initModals() {
 
 /* --- Cookie consent ------------------------------------------------------- */
 (function initCookies() {
-  const KEY = 'vouchaeo.cookie-consent';
+  const KEY = 'laude.cookie-consent';
   const bar = document.getElementById('cookiebar');
   const analytics = document.getElementById('ck-analytics');
   const marketing = document.getElementById('ck-marketing');
@@ -489,23 +531,270 @@ const Modals = (function initModals() {
   });
 })();
 
-/* --- Hero email capture: hand off to the demo wizard, prefilled ------------ */
-(function initWaitlist() {
-  const form = document.querySelector('.waitlist');
-  if (!form) return;
+/* --- Live AI visibility check (popup): form -> loading -> real results ----
+   Posts to the /api/check serverless function, which queries ChatGPT,
+   Perplexity, Gemini and Claude and reports whether the firm is named/cited.
+   The "See the difference" section on the page is a static sample and is NOT
+   touched by this — the two are intentionally separate. */
+(function initVisibilityCheck() {
+  const root = document.getElementById('visibility-check');
+  const form = document.getElementById('visibility-form');
+  if (!root || !form) return;
 
-  form.addEventListener('submit', (event) => {
+  const views = {
+    form: root.querySelector('[data-view="form"]'),
+    loading: root.querySelector('[data-view="loading"]'),
+    results: root.querySelector('[data-view="results"]'),
+  };
+  const error = form.querySelector('[data-error]');
+  const btn = form.querySelector('button[type="submit"]');
+  const list = document.getElementById('ck-result-list');
+  const engineRows = [...document.querySelectorAll('#ck-engine-status li')];
+
+  const show = (name) => {
+    Object.entries(views).forEach(([k, el]) => { el.hidden = k !== name; });
+  };
+  const setAll = (sel, value) => root.querySelectorAll(sel).forEach((el) => { el.textContent = value; });
+
+  function reset() {
+    form.reset();
+    if (error) error.textContent = '';
+    show('form');
+  }
+  root.querySelector('[data-check-reset]')?.addEventListener('click', reset);
+
+  // reopening the popup after a result starts fresh
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-open-modal="checker-modal"]')) {
+      if (!views.form.hidden) return;
+      reset();
+    }
+  });
+
+  const cleanDomain = (url) => String(url || '').trim().toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
+
+  function playEngineStates() {
+    // staged "querying -> done" ticks while the request is in flight
+    engineRows.forEach((row, i) => {
+      const state = row.querySelector('[data-state]');
+      row.classList.remove('is-done');
+      state.textContent = 'Querying…';
+      setTimeout(() => { row.classList.add('is-searching'); }, i * 180);
+    });
+  }
+
+  function renderResults(data) {
+    setAll('[data-r-firm]', data.firm);
+    setAll('[data-r-specialty]', data.specialty);
+    setAll('[data-r-city]', data.city);
+
+    const total = data.engines.length;
+    const named = data.engines.filter((e) => e.named).length;
+    const level = named === 0 ? 'none' : named >= 3 ? 'good' : 'some';
+
+    root.querySelector('[data-score-count]').textContent = String(named);
+    const meter = root.querySelector('[data-meter]');
+    meter.dataset.level = level;
+    root.querySelector('[data-meter-fill]').style.width = `${Math.round((named / total) * 100)}%`;
+
+    root.querySelector('[data-cta-line]').textContent = named === 0
+      ? `AI is not naming ${data.firm} in your market yet. Here is who it names instead, and how we change that.`
+      : `You are named by ${named} of ${total} engines. Here is where you are missing, and how we close the gap.`;
+
+    list.innerHTML = '';
+    data.engines.forEach((e) => {
+      const li = document.createElement('li');
+
+      if (e.configured === false) {
+        li.className = 'vr vr--skipped';
+        li.innerHTML = `
+          <div class="vr__top">
+            <img class="vr__logo" src="${e.logo}" alt="">
+            <span class="vr__engine">${esc(e.engine)}</span>
+            <span class="tag tag--muted"><span class="tag__text">Not connected</span></span>
+          </div>
+          <p class="vr__note">Add this engine’s API key to include it in the check.</p>`;
+        list.appendChild(li);
+        return;
+      }
+
+      li.className = `vr ${e.named ? 'vr--named' : 'vr--missing'}`;
+      const statusTag = e.named
+        ? '<span class="tag tag--mint"><span class="tag__text">Names you</span></span>'
+        : '<span class="tag tag--coral"><span class="tag__text">Not named</span></span>';
+
+      const cited = `<span class="vr__flag ${e.cited ? 'is-yes' : 'is-no'}">${e.cited ? 'Your site cited as a source' : 'Your site not cited'}</span>`;
+
+      const comps = (e.competitors && e.competitors.length)
+        ? `<div class="vr__comp"><span class="vr__comp-label">Points to instead</span>${
+            e.competitors.slice(0, 3).map((c) => `<span class="vr__chip">${esc(c)}</span>`).join('')
+          }</div>`
+        : '';
+
+      const excerpt = e.answer
+        ? `<p class="vr__excerpt">${esc(e.answer).slice(0, 200)}${e.answer.length > 200 ? '…' : ''}</p>`
+        : '';
+
+      li.innerHTML = `
+        <div class="vr__top">
+          <img class="vr__logo" src="${e.logo}" alt="">
+          <span class="vr__engine">${esc(e.engine)}</span>
+          ${statusTag}
+        </div>
+        <div class="vr__flags">${cited}</div>
+        ${comps}${excerpt}`;
+      list.appendChild(li);
+    });
+
+    show('results');
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+
+  // local-preview fallback so the flow is testable without the backend deployed
+  function mockResult({ firm, website, specialty, city, competitor }) {
+    const rival = competitor || 'Robert Half';
+    const logos = {
+      ChatGPT: 'assets/logo-openai.svg', Perplexity: 'assets/logo-perplexity.svg',
+      Gemini: 'assets/logo-gemini.svg', Claude: 'assets/logo-claude.svg',
+    };
+    const engines = ['ChatGPT', 'Perplexity', 'Gemini', 'Claude'].map((name, i) => ({
+      engine: name, logo: logos[name], configured: true,
+      named: i === 3, cited: i === 3,
+      competitors: i === 3 ? [] : [rival, 'Kforce', 'Adecco'],
+      answer: i === 3
+        ? `For ${specialty} recruitment in ${city}, ${firm} is frequently cited as the specialist to contact.`
+        : `For ${specialty} recruiters in ${city}, the firms usually surfaced are ${rival} and other national agencies.`,
+      query: `best ${specialty} recruiters in ${city}`,
+    }));
+    return { firm, domain: cleanDomain(website), specialty, city, engines, demo: true };
+  }
+
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (error) error.textContent = '';
 
-    const input = form.querySelector('input[type="email"]');
-    if (!input?.value) return;
+    const data = new FormData(form);
+    const payload = {
+      firm: String(data.get('firm') || '').trim(),
+      website: String(data.get('website') || '').trim(),
+      specialty: String(data.get('specialty') || '').trim(),
+      city: String(data.get('city') || '').trim(),
+      competitor: String(data.get('competitor') || '').trim(),
+      email: String(data.get('email') || '').trim(),
+      botcheck: data.get('botcheck') ? 'true' : '',
+    };
 
-    Modals.show('demo-modal');
-    const target = document.querySelector('#demo-form input[name="email"]');
-    if (target) target.value = input.value;
+    if (!payload.firm || !payload.website || !payload.specialty || !payload.city) {
+      if (error) error.textContent = 'Add your firm, website, specialty, and city so we can run the check.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(payload.email)) {
+      if (error) error.textContent = 'Enter a valid work email so we can save your check.';
+      form.querySelector('input[name="email"]')?.focus();
+      return;
+    }
 
-    input.value = '';
-    input.blur();
+    // fill loading + result copy
+    setAll('[data-q-specialty]', payload.specialty);
+    setAll('[data-q-city]', payload.city);
+    btn?.setAttribute('aria-busy', 'true');
+    show('loading');
+    playEngineStates();
+
+    // capture the lead in parallel (client-side, so leads survive even without the backend)
+    sendToInbox({
+      subject: `New AI visibility check — ${payload.firm} (${payload.specialty}, ${payload.city})`,
+      from_name: payload.firm || 'Laud website',
+      replyto: payload.email,
+      botcheck: payload.botcheck,
+      Firm: payload.firm,
+      Website: payload.website,
+      Specialty: payload.specialty,
+      'City / market': payload.city,
+      Competitor: payload.competitor || '—',
+      'Work email': payload.email,
+      Source: 'Live AI visibility check',
+      'Submitted from': window.location.href,
+    }).catch(() => {});
+
+    const started = Date.now();
+    let result;
+    try {
+      const res = await fetch('/api/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`status ${res.status}`);
+      result = await res.json();
+    } catch (err) {
+      // no backend reachable (e.g. local static preview) -> labelled demo
+      const localish = /^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname);
+      if (localish) {
+        result = mockResult(payload);
+      } else {
+        btn?.removeAttribute('aria-busy');
+        show('form');
+        if (error) error.textContent = 'We could not reach the check just now. Please try again in a moment.';
+        return;
+      }
+    }
+
+    // keep the loading state visible long enough to read the engine ticks
+    const minMs = reduceMotion ? 0 : 1400;
+    const wait = Math.max(0, minMs - (Date.now() - started));
+    setTimeout(() => {
+      engineRows.forEach((row) => {
+        row.classList.remove('is-searching');
+        row.classList.add('is-done');
+        const state = row.querySelector('[data-state]');
+        if (state) state.textContent = 'Done ✓';
+      });
+      btn?.removeAttribute('aria-busy');
+      renderResults(result);
+    }, wait);
+  });
+})();
+
+/* --- Button click sound ---------------------------------------------------- */
+(function initClickSound() {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+
+  let ctx = null;
+
+  function click() {
+    try {
+      if (!ctx) ctx = new AC();
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const t = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      // short, soft tick — quick pitch drop, fast decay
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(520, t);
+      osc.frequency.exponentialRampToValueAtTime(180, t + 0.05);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.16, t + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.1);
+    } catch {
+      /* audio blocked or unavailable — silently skip */
+    }
+  }
+
+  // primary action buttons only, so the whole page does not tick
+  document.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('.btn-solid, .btn-hole, .aeo__tab')) click();
   });
 })();
 
@@ -529,7 +818,7 @@ const Modals = (function initModals() {
     try {
       await sendToInbox({
         subject: `New newsletter signup — ${email}`,
-        from_name: 'vouchaeo website',
+        from_name: 'Laud website',
         replyto: email,
         botcheck: new FormData(form).get('botcheck') ? 'true' : '',
         'Work email': email,

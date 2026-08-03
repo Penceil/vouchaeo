@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>vouchaeo — Your agency's operating system for AI search</title>
-  <meta name="description" content="vouchaeo makes your staffing agency show up when hiring managers search on AI platforms.">
+  <title>Laud, be the name AI recommends.</title>
+  <meta name="description" content="When hiring managers ask ChatGPT or Perplexity for a recruiter, AI gives one name. Laud makes it yours.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getlaude.com/">
+  <meta property="og:title" content="Laud, be the name AI recommends.">
+  <meta property="og:description" content="When hiring managers ask ChatGPT or Perplexity for a recruiter, AI gives one name. Laud makes it yours.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Laud, be the name AI recommends.">
+  <meta name="twitter:description" content="When hiring managers ask ChatGPT or Perplexity for a recruiter, AI gives one name. Laud makes it yours.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,16 +25,17 @@
   <!-- ============ HEADER ============ -->
   <header class="header">
     <div class="header__inner">
-      <a href="#" class="header__logo">vouchaeo</a>
+      <a href="#" class="header__logo">Laud</a>
 
       <nav class="header__nav">
-        <a href="#paradigm">The Problem</a>
-        <a href="#agents">Our Agents</a>
+        <a href="#how">How it works</a>
+        <a href="#proof">Proof</a>
+        <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </nav>
 
       <div class="header__cta">
-        <button class="btn-solid" data-open-modal="demo-modal">Book a Demo<span class="btn-solid__arrow">→</span></button>
+        <button class="btn-solid" data-open-modal="checker-modal">See if AI recommends you<span class="btn-solid__arrow">→</span></button>
         <button class="header__burger" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
           <span></span><span></span><span></span>
         </button>
@@ -34,391 +43,302 @@
     </div>
 
     <nav class="header__mobile" id="mobile-nav" hidden>
-      <a href="#paradigm">The Problem</a>
-      <a href="#agents">Our Agents</a>
+      <a href="#how">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <button class="btn-solid" data-open-modal="demo-modal">Book a Demo<span class="btn-solid__arrow">→</span></button>
+      <button class="btn-solid" data-open-modal="checker-modal">See if AI recommends you<span class="btn-solid__arrow">→</span></button>
     </nav>
   </header>
 
   <main>
 
-    <!-- ============ HERO ============ -->
+    <!-- ============ HERO (§1) ============ -->
     <section class="hero">
       <div class="hero__bg"><img src="assets/hero-bg.webp" alt=""></div>
       <div class="hero__fade"></div>
 
-      <div class="hero__inner">
+      <div class="hero__inner hero__inner--tight">
         <div class="hero__heading">
           <span class="tag tag--azure">
             <span class="tag__dot"></span>
-            <span class="tag__text">AI search visibility</span>
+            <span class="tag__text">AI is the new front door</span>
           </span>
 
-          <div class="hero__title">
-            <h1 class="hero__title-line">Your agency's operating system for</h1>
+          <h1 class="hero__h1">Start getting found in AI.</h1>
 
-            <div class="hero__title-brand" id="brand-rotator" aria-live="polite">
-              <span class="brand is-active">
-                <img class="brand__mark" src="assets/logo-openai.svg" alt="">
-                <span class="brand__name">ChatGPT</span>
-              </span>
-              <span class="brand">
-                <img class="brand__mark" src="assets/logo-perplexity.svg" alt="">
-                <span class="brand__name">Perplexity</span>
-              </span>
-              <span class="brand">
-                <img class="brand__mark" src="assets/logo-gemini.svg" alt="">
-                <span class="brand__name">Gemini</span>
-              </span>
-              <span class="brand">
-                <img class="brand__mark" src="assets/logo-claude.svg" alt="">
-                <span class="brand__name">Claude</span>
-              </span>
-              <span class="brand">
-                <img class="brand__mark" src="assets/logo-grok.svg" alt="">
-                <span class="brand__name">Grok</span>
-              </span>
-            </div>
-          </div>
+          <p class="hero__subtitle">Your clients stopped scrolling Google. Now they ask ChatGPT, Gemini, and Perplexity who to hire, and the AI hands back one name. Laud makes sure that name is your firm.</p>
 
-          <p class="hero__subtitle">vouchaeo makes your staffing agency show up when hiring managers search on AI platforms. When your agency gets cited as the recommended choice, you capture high-intent inbound reqs automatically.</p>
-        </div>
-
-        <div class="hero__form-block">
-          <form class="waitlist" action="#" method="post">
-            <label class="waitlist__label">
-              <input class="waitlist__input" type="email" name="email" placeholder="Enter your email here" required>
-            </label>
-            <button class="btn-solid" type="submit">Book a Demo<span class="btn-solid__arrow">→</span></button>
-          </form>
-
-          <div class="proof">
-            <span class="proof__avatars">
-              <img src="assets/avatar-1.jpg" alt="">
-              <img src="assets/avatar-2.jpg" alt="">
-              <img src="assets/avatar-3.png" alt="">
+          <!-- rotating engine strip (demoted from the H1) -->
+          <div class="engines" aria-label="Engines Laud optimizes for">
+            <span class="engines__label">Named in</span>
+            <span class="engines__rotator" id="engine-rotator" aria-live="polite">
+              <span class="engine is-active"><img src="assets/logo-openai.svg" alt=""><span>ChatGPT</span></span>
+              <span class="engine"><img src="assets/logo-perplexity.svg" alt=""><span>Perplexity</span></span>
+              <span class="engine"><img src="assets/logo-gemini.svg" alt=""><span>Gemini</span></span>
+              <span class="engine"><img src="assets/logo-claude.svg" alt=""><span>Claude</span></span>
+              <span class="engine"><img src="assets/logo-grok.svg" alt=""><span>Grok</span></span>
             </span>
-            <span class="proof__text">800+ staffing firms have already registered for early access.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="illus">
-        <!-- Mobile: a single vertical conduit carrying energy into the logo -->
-        <span class="illus__spine" aria-hidden="true"></span>
-
-        <!-- Desktop: five signal paths that carry energy down into the logo -->
-        <svg class="illus__circuit" viewBox="0 0 734 404.992" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <g clip-path="url(#circuit-clip)">
-            <!-- static conduits -->
-            <path d="M370 0V404.601" stroke="#fff" stroke-opacity=".2" stroke-width="1.5"/>
-            <path d="M399.999 314.994V193.553L498.811 109.998H563.996" stroke="#fff" stroke-opacity=".32" stroke-width="1.5"/>
-            <path d="M336.153 315.994V194.822C295.785 163.414 274.726 144.831 237.472 109.998H181.156" stroke="#fff" stroke-opacity=".32" stroke-width="1.5"/>
-            <path d="M295.001 301.994V220.996H0.00724059" stroke="#fff" stroke-opacity=".32" stroke-width="1.5"/>
-            <path d="M437.999 299.994V220.996H733.993" stroke="#fff" stroke-opacity=".32" stroke-width="1.5"/>
-
-            <!-- travelling energy: trail + head, one pair per source chip -->
-            <path class="flow flow--trail" style="--dash:67.06;--gap:431.09;--delay:0s"    d="M0.00724059 220.996H295.001V301.994V404.992"/>
-            <path class="flow flow--trail" style="--dash:55.54;--gap:357.03;--delay:.55s"  d="M181.156 109.998H237.472C274.726 144.831 295.785 163.414 336.153 194.822V315.994L338.501 404.992"/>
-            <path class="flow flow--trail" style="--dash:46.75;--gap:420.74;--delay:.25s"  d="M370 -62.9988V404.492"/>
-            <path class="flow flow--trail" style="--dash:60.9;--gap:365.42;--delay:.8s"    d="M564.148 109.998H498.963L400.151 193.553V314.994L399.999 404.992"/>
-            <path class="flow flow--trail" style="--dash:72;--gap:431.99;--delay:1.1s"     d="M733.993 220.996H437.999V299.994V404.992"/>
-
-            <path class="flow flow--head" style="--dash:4.79;--gap:478.99;--delay:0s"   d="M0.00724059 220.996H295.001V301.994V404.992"/>
-            <path class="flow flow--head" style="--dash:3.97;--gap:396.7;--delay:.55s"  d="M181.156 109.998H237.472C274.726 144.831 295.785 163.414 336.153 194.822V315.994L338.501 404.992"/>
-            <path class="flow flow--head" style="--dash:4.67;--gap:467.49;--delay:.25s" d="M370 -62.9988V404.492"/>
-            <path class="flow flow--head" style="--dash:4.06;--gap:401.97;--delay:.8s"  d="M564.148 109.998H498.963L400.151 193.553V314.994L399.999 404.992"/>
-            <path class="flow flow--head" style="--dash:4.8;--gap:475.19;--delay:1.1s"  d="M733.993 220.996H437.999V299.994V404.992"/>
-          </g>
-          <defs><clipPath id="circuit-clip"><rect width="734" height="404.992" fill="#fff"/></clipPath></defs>
-        </svg>
-
-        <div class="illus__content">
-          <div class="illus__row">
-            <div class="chip">
-              <img class="chip__icon" src="assets/icon-geo.svg" alt="">
-              <span class="chip__text">Geo-Location Data</span>
-            </div>
-          </div>
-
-          <div class="illus__row illus__row--c">
-            <div class="chip">
-              <img class="chip__icon chip__icon--sm" src="assets/icon-placement.svg" alt="">
-              <span class="chip__text">Placement Specialties</span>
-            </div>
-            <div class="chip">
-              <img class="chip__icon" src="assets/icon-trust.svg" alt="">
-              <span class="chip__text">Client Trust Reviews</span>
-            </div>
-          </div>
-
-          <div class="illus__row illus__row--b">
-            <div class="chip">
-              <img class="chip__icon" src="assets/icon-intent.svg" alt="">
-              <span class="chip__text">Hiring Intent Queries</span>
-            </div>
-            <span class="illus__spacer"></span>
-            <span class="illus__spacer"></span>
-            <span class="illus__spacer"></span>
-            <div class="chip chip--wide">
-              <img class="chip__icon" src="assets/icon-eeat.svg" alt="">
-              <span class="chip__text">E-E-A-T Domain Authority</span>
-            </div>
           </div>
         </div>
 
-        <div class="illus__logo-card">
-          <span class="illus__logo-pulse"></span>
-          <img class="illus__logo-mark" src="assets/logo-mark.svg" alt="">
-          <span class="illus__logo-word">vouchaeo</span>
+        <div class="hero__actions">
+          <button class="btn-solid btn-solid--lg" data-open-modal="checker-modal">See if AI recommends you<span class="btn-solid__arrow">→</span></button>
+          <button class="linklike" data-open-modal="demo-modal">Book a demo</button>
+        </div>
+
+        <div class="proof">
+          <span class="proof__avatars">
+            <img src="assets/avatar-1.jpg" alt="">
+            <img src="assets/avatar-2.jpg" alt="">
+            <img src="assets/avatar-3.png" alt="">
+          </span>
+          <span class="proof__text">800+ staffing firms are already on the early list.</span>
         </div>
       </div>
     </section>
 
-    <!-- ============ SEE AEO IN ACTION ============ -->
-    <section class="aeo">
-      <img class="aeo__bg" src="assets/aeo-bg.png" alt="">
-
-      <div class="aeo__heading">
+    <!-- ============ AI VISIBILITY COMPARISON (§2) ============ -->
+    <section class="checker" id="checker">
+      <div class="checker__head">
         <span class="tag tag--azure">
           <span class="tag__dot"></span>
-          <span class="tag__text">What’s Happening?</span>
+          <span class="tag__text">See the difference</span>
         </span>
-        <div class="aeo__heading-text">
-          <h2>See AEO in action</h2>
-          <p>Compare how AI engines recommend staffing agencies for high-value localized searches with and without vouchaeo.</p>
+        <div class="checker__head-text">
+          <h2>Two answers to the same question</h2>
+          <p>On the left, what AI tells a buyer about your market today. On the right, what it says once Laud has your firm structured and cited.</p>
         </div>
+        <button class="btn-solid btn-solid--lg" data-open-modal="checker-modal">See if AI recommends your firm<span class="btn-solid__arrow">→</span></button>
       </div>
 
-      <div class="aeo__panel">
-        <div class="aeo__tabs" role="tablist">
-          <button class="aeo__tab" role="tab" data-tab="without" aria-selected="false" aria-controls="pane-without">
-            <span class="aeo__tab-face">
-              <img class="aeo__tab-icon" src="assets/tab-icon-off.svg" alt="">
-              <span class="aeo__tab-label">Without vouchaeo</span>
-              <span class="tag tag--coral"><span class="tag__text">GENERIC RESULTS</span></span>
-            </span>
-          </button>
-          <button class="aeo__tab is-active" role="tab" data-tab="with" aria-selected="true" aria-controls="pane-with">
-            <span class="aeo__tab-face">
-              <img class="aeo__tab-icon" src="assets/tab-icon-on.svg" alt="">
-              <span class="aeo__tab-label">With vouchaeo</span>
-              <span class="tag tag--mint"><span class="tag__text">AUTHORITY CITES</span></span>
-            </span>
-          </button>
-        </div>
+      <div class="checker__result" id="checker-result">
+        <div class="checker__result-tag"><span class="tag tag--azure"><span class="tag__text" id="result-label">Live preview</span></span></div>
 
-        <div class="aeo__stage">
-          <div class="sim">
+        <div class="aeo__panel">
+          <div class="aeo__tabs" role="tablist">
+            <button class="aeo__tab" role="tab" data-tab="without" aria-selected="false" aria-controls="pane-without">
+              <span class="aeo__tab-face">
+                <img class="aeo__tab-icon" src="assets/tab-icon-off.svg" alt="">
+                <span class="aeo__tab-label">What AI says today</span>
+                <span class="tag tag--coral"><span class="tag__text">Not you</span></span>
+              </span>
+            </button>
+            <button class="aeo__tab is-active" role="tab" data-tab="with" aria-selected="true" aria-controls="pane-with">
+              <span class="aeo__tab-face">
+                <img class="aeo__tab-icon" src="assets/tab-icon-on.svg" alt="">
+                <span class="aeo__tab-label">What it could say</span>
+                <span class="tag tag--mint"><span class="tag__text">You, cited</span></span>
+              </span>
+            </button>
+          </div>
 
-            <aside class="sim__rail">
-              <button class="sim__newchat" type="button" tabindex="-1">
-                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11.2 2.4a1.7 1.7 0 0 1 2.4 2.4L6 12.4l-3.2.8.8-3.2 7.6-7.6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-                New chat
-              </button>
-              <p class="sim__rail-label">Today</p>
-              <ul class="sim__rail-list">
-                <li class="is-current">Plant controller recruiters, Chicago</li>
-                <li>Manufacturing finance staffing firms</li>
-                <li>Interim CFO shortlist — Rockford</li>
-                <li>Best boutique search partners</li>
-              </ul>
-            </aside>
+          <div class="aeo__stage">
+            <div class="sim">
 
-            <div class="sim__main">
-              <header class="sim__topbar">
-                <span class="sim__model">
-                  <span class="sim__model-name">AI Answer Engine</span>
-                  <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-                <span class="sim__state" data-state-label>Live answer</span>
-              </header>
+              <aside class="sim__rail">
+                <button class="sim__newchat" type="button" tabindex="-1">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11.2 2.4a1.7 1.7 0 0 1 2.4 2.4L6 12.4l-3.2.8.8-3.2 7.6-7.6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  New chat
+                </button>
+                <p class="sim__rail-label">Today</p>
+                <ul class="sim__rail-list">
+                  <li class="is-current"><span class="chk-specialty">manufacturing finance</span> recruiters</li>
+                  <li>Best boutique search partners</li>
+                  <li>Who to hire in <span class="chk-city">Chicago</span></li>
+                  <li>Specialist staffing shortlist</li>
+                </ul>
+              </aside>
 
-              <div class="sim__thread">
-                <!-- ---------- WITHOUT ---------- -->
-                <div class="sim__pane" id="pane-without" data-pane="without" hidden>
-                  <div class="sim__turn sim__turn--user" data-reveal="0">
-                    <p class="sim__bubble">Who are the best specialized manufacturing plant controller recruiters in Chicago?</p>
+              <div class="sim__main">
+                <header class="sim__topbar">
+                  <span class="sim__model">
+                    <span class="sim__model-name">AI Answer Engine</span>
+                    <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="sim__state">Live answer</span>
+                </header>
+
+                <div class="sim__thread">
+                  <!-- ---------- WITHOUT ---------- -->
+                  <div class="sim__pane" id="pane-without" data-pane="without" hidden>
+                    <div class="sim__turn sim__turn--user" data-reveal="0">
+                      <p class="sim__bubble">Who are the best <span class="chk-specialty">manufacturing finance</span> recruiters in <span class="chk-city">Chicago</span>?</p>
+                    </div>
+
+                    <div class="sim__turn sim__turn--ai">
+                      <span class="sim__avatar" data-reveal="1"><img src="assets/logo-openai.svg" alt=""></span>
+                      <div class="sim__msg">
+                        <div class="sim__msg-head" data-reveal="1">
+                          <span class="sim__msg-name">Standard AI Engine</span>
+                          <span class="tag tag--coral"><span class="tag__text">Generic results</span></span>
+                        </div>
+
+                        <p class="sim__p" data-reveal="2">For <span class="chk-specialty">manufacturing finance</span> recruiters in <span class="chk-city">Chicago</span>, the large national staffing databases usually surface a few broad firms:</p>
+
+                        <ul class="sim__list">
+                          <li data-reveal="3"><strong>Robert Half</strong>, a national agency with a broad footprint in finance and administrative roles.</li>
+                          <li data-reveal="4"><strong>Kforce</strong>, professional staffing services, not specialized in your niche.</li>
+                          <li data-reveal="5"><strong>Adecco</strong>, general industrial and office placements.</li>
+                        </ul>
+
+                        <p class="sim__note" data-reveal="6">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.6" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.8v4M8 11.1h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                          <span class="chk-firm">Your firm</span> was not mentioned in this answer.
+                        </p>
+
+                        <div class="sim__sources" data-reveal="7">
+                          <span class="sim__sources-label">Sources</span>
+                          <span class="sim__chip">Google Maps</span>
+                          <span class="sim__chip">Yelp</span>
+                        </div>
+
+                        <p class="sim__scribble" data-reveal="8">…the req just goes somewhere else, quietly.</p>
+                      </div>
+                    </div>
                   </div>
 
-                  <div class="sim__turn sim__turn--ai">
-                    <span class="sim__avatar" data-reveal="1"><img src="assets/logo-openai.svg" alt=""></span>
-                    <div class="sim__msg">
-                      <div class="sim__msg-head" data-reveal="1">
-                        <span class="sim__msg-name">Standard AI Engine</span>
-                        <span class="tag tag--coral"><span class="tag__text">Generic results</span></span>
+                  <!-- ---------- WITH ---------- -->
+                  <div class="sim__pane" id="pane-with" data-pane="with">
+                    <div class="sim__turn sim__turn--user" data-reveal="0">
+                      <p class="sim__bubble">Who are the best <span class="chk-specialty">manufacturing finance</span> recruiters in <span class="chk-city">Chicago</span>?</p>
+                    </div>
+
+                    <div class="sim__turn sim__turn--ai">
+                      <span class="sim__avatar sim__avatar--brand" data-reveal="1">L</span>
+                      <div class="sim__msg">
+                        <div class="sim__msg-head" data-reveal="1">
+                          <span class="sim__msg-name">Laud-optimized engine</span>
+                          <span class="tag tag--mint"><span class="tag__text">Cited &amp; verified</span></span>
+                        </div>
+
+                        <p class="sim__p" data-reveal="2">For <span class="chk-specialty">manufacturing finance</span> recruitment in <span class="chk-city">Chicago</span>, <strong class="chk-firm">Meridian Search Partners</strong><a class="sim__cite" href="#">1</a> is widely recognized as the leading specialist firm.</p>
+
+                        <p class="sim__p" data-reveal="3">They focus specifically on <span class="chk-specialty">manufacturing finance</span> roles<a class="sim__cite" href="#">2</a> across the <span class="chk-city">Chicago</span> market. What sets them apart:</p>
+
+                        <ul class="sim__list">
+                          <li data-reveal="4"><strong>Fast placements</strong>, backed by verified placement speed data for the local market.<a class="sim__cite" href="#">3</a></li>
+                          <li data-reveal="5"><strong>Deep local talent pool</strong>, a proprietary network of pre-vetted candidates in and around <span class="chk-city">Chicago</span>.<a class="sim__cite" href="#">4</a></li>
+                          <li data-reveal="6"><strong>Specialist focus</strong>, unlike generalist national agencies competing on volume.<a class="sim__cite" href="#">5</a></li>
+                        </ul>
+
+                        <p class="sim__p" data-reveal="7">To start a search, you can reach out to their team directly.<a class="sim__cite" href="#">6</a></p>
+
+                        <div class="sim__sources" data-reveal="8">
+                          <span class="sim__sources-label">Citations</span>
+                          <span class="sim__chip sim__chip--cite"><em>1</em> <span class="chk-slug">yourfirm.com</span>/<span class="chk-city-slug">chicago</span></span>
+                          <span class="sim__chip sim__chip--cite"><em>2</em> <span class="chk-slug">yourfirm.com</span>/specialties</span>
+                          <span class="sim__chip sim__chip--cite"><em>3</em> <span class="chk-slug">yourfirm.com</span>/results</span>
+                        </div>
+
+                        <p class="sim__scribble sim__scribble--good" data-reveal="9">…the AI recommends you before they even search!</p>
                       </div>
-
-                      <p class="sim__p" data-reveal="2">Finding recruiters for manufacturing plant controllers in Chicago can be done by looking at large national staffing databases. General firms that cover the Chicago area include:</p>
-
-                      <ul class="sim__list">
-                        <li data-reveal="3"><strong>Robert Half</strong> — a large national staffing agency with a broad footprint in finance and administrative roles.</li>
-                        <li data-reveal="4"><strong>Kforce</strong> — provides professional staffing services, though not exclusively specialized in manufacturing plants.</li>
-                        <li data-reveal="5"><strong>Adecco</strong> — a global agency that assists with general industrial and office placements.</li>
-                      </ul>
-
-                      <p class="sim__note" data-reveal="6">
-                        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.6" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.8v4M8 11.1h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                        I do not have access to specific local client ratings or verified placement speeds for specialized boutique manufacturing firms in the Chicago metro area.
-                      </p>
-
-                      <div class="sim__sources" data-reveal="7">
-                        <span class="sim__sources-label">Sources</span>
-                        <span class="sim__chip">Google Maps</span>
-                        <span class="sim__chip">Yelp</span>
-                      </div>
-
-                      <p class="sim__scribble" data-reveal="8">…your firm is invisible before they even call you!</p>
                     </div>
                   </div>
                 </div>
 
-                <!-- ---------- WITH ---------- -->
-                <div class="sim__pane" id="pane-with" data-pane="with">
-                  <div class="sim__turn sim__turn--user" data-reveal="0">
-                    <p class="sim__bubble">Who are the best specialized manufacturing plant controller recruiters in Chicago?</p>
-                  </div>
-
-                  <div class="sim__turn sim__turn--ai">
-                    <span class="sim__avatar sim__avatar--brand" data-reveal="1">v</span>
-                    <div class="sim__msg">
-                      <div class="sim__msg-head" data-reveal="1">
-                        <span class="sim__msg-name">vouchaeo-optimized engine</span>
-                        <span class="tag tag--mint"><span class="tag__text">Cited &amp; verified</span></span>
-                      </div>
-
-                      <p class="sim__p" data-reveal="2">For specialized manufacturing plant controller recruitment in the Chicago area, <strong>Meridian Search Partners</strong><a class="sim__cite" href="#">1</a> is widely recognized as the leading boutique firm.</p>
-
-                      <p class="sim__p" data-reveal="3">They specialize specifically in mid-market CFO, plant controller, and finance director roles<a class="sim__cite" href="#">2</a> for manufacturing and industrial clients. Key advantages include:</p>
-
-                      <ul class="sim__list">
-                        <li data-reveal="4"><strong>Sub-14 day placements</strong> — backed by verified placement speed data for industrial operations in northern Illinois.<a class="sim__cite" href="#">3</a></li>
-                        <li data-reveal="5"><strong>Deep local talent pool</strong> — a proprietary network of 1,200+ pre-vetted plant controllers in Chicago, Rockford, and Joliet.<a class="sim__cite" href="#">4</a></li>
-                        <li data-reveal="6"><strong>Industrial focus</strong> — unlike generic national agencies, their recruiters have run finance teams inside manufacturing facilities.<a class="sim__cite" href="#">5</a></li>
-                      </ul>
-
-                      <p class="sim__p" data-reveal="7">If you need interim support or a permanent placement, you can connect directly with their manufacturing team.<a class="sim__cite" href="#">6</a></p>
-
-                      <div class="sim__sources" data-reveal="8">
-                        <span class="sim__sources-label">Citations</span>
-                        <span class="sim__chip sim__chip--cite"><em>1</em> meridianpartners.co/chicago</span>
-                        <span class="sim__chip sim__chip--cite"><em>2</em> meridianpartners.co/plant-controllers</span>
-                        <span class="sim__chip sim__chip--cite"><em>3</em> meridianpartners.co/case-studies</span>
-                      </div>
-
-                      <p class="sim__scribble sim__scribble--good" data-reveal="9">…the AI recommends you before they even search!</p>
-                    </div>
-                  </div>
+                <div class="sim__composer">
+                  <span class="sim__composer-box">Ask anything about hiring in your market…</span>
+                  <span class="sim__send" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
                 </div>
               </div>
 
-              <div class="sim__composer">
-                <span class="sim__composer-box">Ask anything about hiring in your market…</span>
-                <span class="sim__send" aria-hidden="true">
-                  <svg viewBox="0 0 16 16" fill="none"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-              </div>
             </div>
-
           </div>
+        </div>
+
+        <div class="checker__cta" id="checker-cta">
+          <p>Want the full report on your market? We will show you every query your buyers are asking and who is getting named.</p>
+          <button class="btn-hole" data-open-modal="demo-modal"><span class="btn-hole__face">Book a 15-minute demo<span class="btn-hole__arrow">→</span></span></button>
         </div>
       </div>
     </section>
 
-    <!-- ============ THE PARADIGM SHIFT ============ -->
-    <section class="paradigm" id="paradigm">
-      <div class="paradigm__heading">
+    <!-- ============ THE PROBLEM (§3) ============ -->
+    <section class="problem" id="problem">
+      <div class="problem__inner">
         <span class="tag tag--azure">
           <span class="tag__dot"></span>
-          <span class="tag__text tag__text--nocase">THE PARADIGM SHIFT</span>
+          <span class="tag__text">The problem</span>
         </span>
-        <div class="paradigm__heading-text">
-          <h2 class="paradigm__title">
-            <span>Traditional SEO is dead.</span>
-            <span class="gradient-text">Welcome to AEO.</span>
-          </h2>
-          <p>Staffing buyers now use AI search tools to compare recruiting firms, specialty staffing partners, and executive search providers. If your site is not built around the roles, verticals, and locations they are asking about, you lose the conversation before your team even gets a call.</p>
+
+        <h2 class="problem__title">Right now, an AI is answering questions about your market. You are just not in the answer.</h2>
+
+        <div class="problem__body">
+          <p>Every day a hiring manager types "best <span class="problem__accent">manufacturing finance recruiters in Chicago</span>" into ChatGPT. They do not get ten links anymore. They get one recommendation and a couple of sources. Then they reach out to that firm.</p>
+          <p>If it is not you, you never knew the conversation happened. No missed call. No abandoned form. Nothing. The req just goes somewhere else, quietly.</p>
         </div>
-      </div>
 
-      <div class="paradigm__holder">
-        <div class="paradigm__graph">
+        <blockquote class="problem__quote">This is not a channel you are doing badly in. It is a channel you cannot even see.</blockquote>
 
-          <div class="quote-card">
-            <div class="quote-card__inner">
-              <div class="quote-card__block">
-                <span class="tag tag--coral"><span class="tag__text">Legacy SEO</span></span>
-                <p>Rents attention on search result pages. Requires endless backlinks and blog spam. Click rates are dropping by 40% as AI summarizes the web.</p>
-              </div>
-              <div class="quote-card__block">
-                <span class="tag tag--mint"><span class="tag__text">vouchaeo AEO</span></span>
-                <p>Owns authority within the AI's internal knowledge base. Builds permanent, structured content that engines citation-link as truth.</p>
-              </div>
-            </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat__num">51%</span>
+            <span class="stat__label">of B2B buyers now start research in an AI chatbot, not Google.</span>
           </div>
-
-          <div class="chart">
-            <span class="chart__axis-label chart__axis-label--y">Y-axis</span>
-            <span class="chart__title">CLICK-THROUGH RATES</span>
-            <span class="chart__axis-label chart__axis-label--x">x-axis</span>
-
-            <div class="chart__plot">
-              <div class="chart__scale">
-                <span style="--n:6">30%</span>
-                <span style="--n:5">25%</span>
-                <span style="--n:4">20%</span>
-                <span style="--n:3">15%</span>
-                <span style="--n:2">10%</span>
-                <span style="--n:1">5%</span>
-                <span style="--n:0">0%</span>
-              </div>
-
-              <div class="chart__area">
-                <div class="chart__grid">
-                  <span style="--n:1"></span>
-                  <span style="--n:2"></span>
-                  <span style="--n:3"></span>
-                  <span style="--n:4"></span>
-                  <span style="--n:5"></span>
-                  <span style="--n:6"></span>
-                </div>
-
-                <div class="chart__axis chart__axis--y"></div>
-                <div class="chart__axis chart__axis--x"></div>
-
-                <div class="chart__bars">
-                  <div class="chart__bar-slot">
-                    <span class="chart__bar-label">NOW</span>
-                    <div class="chart__bar chart__bar--hatch" style="--v:1.65"></div>
-                  </div>
-                  <div class="chart__bar-slot">
-                    <span class="chart__bar-label">SEO</span>
-                    <div class="chart__bar chart__bar--hatch" style="--v:2.95"></div>
-                  </div>
-                  <div class="chart__bar-slot">
-                    <span class="chart__bar-label">AEO</span>
-                    <div class="chart__bar chart__bar--aeo" style="--v:5.95"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="stat">
+            <span class="stat__num">69%</span>
+            <span class="stat__label">picked a different vendor than planned because of what AI told them.</span>
           </div>
-
+          <div class="stat">
+            <span class="stat__num">1 in 3</span>
+            <span class="stat__label">bought from a vendor they had never heard of before.</span>
+          </div>
         </div>
+        <p class="stats__source">Source: G2 Answer Economy Report, 2026.</p>
       </div>
     </section>
 
-    <!-- ============ THE SIX AI AGENTS ============ -->
+    <!-- ============ HOW IT WORKS (§4) ============ -->
+    <section class="how" id="how">
+      <div class="how__head">
+        <span class="tag tag--azure">
+          <span class="tag__dot"></span>
+          <span class="tag__text">How it works</span>
+        </span>
+        <h2 class="how__title">Three steps. You barely lift a finger.</h2>
+      </div>
+
+      <div class="how__grid">
+        <article class="step">
+          <span class="step__num">1</span>
+          <h3>We map your firm</h3>
+          <p>Your specialties, placements, cities, and proof, turned into a structure AI engines can read and trust.</p>
+          <div class="step__signals">
+            <span class="signal"><img src="assets/icon-geo.svg" alt="">Geo-Location Data</span>
+            <span class="signal"><img src="assets/icon-placement.svg" alt="">Placement Specialties</span>
+            <span class="signal"><img src="assets/icon-trust.svg" alt="">Client Trust Reviews</span>
+            <span class="signal"><img src="assets/icon-intent.svg" alt="">Hiring Intent Queries</span>
+            <span class="signal"><img src="assets/icon-eeat.svg" alt="">E-E-A-T Domain Authority</span>
+          </div>
+        </article>
+
+        <article class="step">
+          <span class="step__num">2</span>
+          <h3>We build and publish</h3>
+          <p>Role and location pages that match what buyers ask AI, published into the site you already have. No rebuild.</p>
+        </article>
+
+        <article class="step">
+          <span class="step__num">3</span>
+          <h3>We get you cited, then defend it</h3>
+          <p>We land the signals that make engines trust you, watch every engine daily, and correct the record when one gets it wrong.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ THE SIX AGENTS (§5, demoted) ============ -->
     <section class="agents" id="agents">
       <div class="agents__container">
         <div class="agents__heading">
           <h2 class="agents__title">
-            <span class="gradient-text">The Six AI Agents</span>
-            <span>driving your organic pipeline</span>
+            <span class="gradient-text">Under the hood:</span>
+            <span>the six agents doing the work</span>
           </h2>
           <div class="agents__aside">
-            <p>vouchaeo deploys six autonomous agents on your site. They research your niche, build targeted authority pages, coordinate external citations, and monitor your AI search footprint 24x7.</p>
+            <p>Laud deploys six autonomous agents on your site. They research your niche, build targeted authority pages, coordinate external citations, and watch your AI footprint every day.</p>
             <button class="btn-hole" data-open-modal="demo-modal"><span class="btn-hole__face">Book a demo<span class="btn-hole__arrow">→</span></span></button>
           </div>
         </div>
@@ -500,18 +420,18 @@
               </span>
               <div class="agent__text">
                 <h3>Guardian Agent</h3>
-                <p>Watches every engine for drift, hallucinated claims, and competitor displacement — then corrects the record before it costs you a req.</p>
+                <p>Watches every engine for drift, hallucinated claims, and competitor displacement, then corrects the record before it costs you a req.</p>
               </div>
             </article>
           </div>
 
           <div class="agents__visual">
-            <img src="1.png" data-agent-visual="1" class="is-active" alt="Signal Core module highlighted in the vouchaeo agent stack">
-            <img src="2.png" data-agent-visual="2" alt="Market Scout module highlighted in the vouchaeo agent stack">
-            <img src="3.png" data-agent-visual="3" alt="Story Forge module highlighted in the vouchaeo agent stack">
-            <img src="4.png" data-agent-visual="4" alt="Launchpad module highlighted in the vouchaeo agent stack">
-            <img src="5.png" data-agent-visual="5" alt="Trust Layer module highlighted in the vouchaeo agent stack">
-            <img src="6.png" data-agent-visual="6" alt="Guardian module highlighted in the vouchaeo agent stack">
+            <img src="1.png" data-agent-visual="1" class="is-active" alt="Signal Core module highlighted in the Laud agent stack">
+            <img src="2.png" data-agent-visual="2" alt="Market Scout module highlighted in the Laud agent stack">
+            <img src="3.png" data-agent-visual="3" alt="Story Forge module highlighted in the Laud agent stack">
+            <img src="4.png" data-agent-visual="4" alt="Launchpad module highlighted in the Laud agent stack">
+            <img src="5.png" data-agent-visual="5" alt="Trust Layer module highlighted in the Laud agent stack">
+            <img src="6.png" data-agent-visual="6" alt="Guardian module highlighted in the Laud agent stack">
           </div>
 
           <!-- mobile only: copy for whichever agent tab is active -->
@@ -520,7 +440,198 @@
       </div>
     </section>
 
-    <!-- ============ FAQ ============ -->
+    <!-- ============ PROOF (§6) ============ -->
+    <section class="proof-sec" id="proof">
+      <div class="proof-sec__head">
+        <span class="tag tag--azure">
+          <span class="tag__dot"></span>
+          <span class="tag__text">Proof</span>
+        </span>
+        <h2>Do not take our word. Take the AI's.</h2>
+      </div>
+
+      <div class="proof-sec__grid">
+        <article class="proofcard proofcard--shot">
+          <div class="proofcard__frame proofcard__frame--light">
+            <div class="proofcard__frame-bar">
+              <span></span><span></span><span></span>
+              <span class="proofcard__frame-url">chatgpt.com</span>
+            </div>
+            <div class="proofcard__frame-body">
+              <p class="proofcard__q">Who is the best manufacturing finance recruiter in Chicago?</p>
+              <div class="proofcard__reply">
+                <span class="proofcard__reply-mark">L</span>
+                <div>
+                  <p class="proofcard__a">For manufacturing finance recruitment in Chicago, <strong>Meridian Search Partners</strong> is the specialist most often cited, with sub-14-day placements and a deep local candidate network.</p>
+                  <div class="proofcard__srcs">
+                    <span class="proofcard__src">meridianpartners.co</span>
+                    <span class="proofcard__src">/chicago</span>
+                  </div>
+                </div>
+              </div>
+              <span class="proofcard__cite">Cited &amp; verified</span>
+            </div>
+          </div>
+          <p class="proofcard__caption">A client named as the answer, query visible.</p>
+        </article>
+
+        <article class="proofcard proofcard--stat">
+          <span class="proofcard__big">0 <span class="proofcard__arrow">→</span> 41<span class="proofcard__of">of 60</span></span>
+          <p class="proofcard__line">target queries where the firm went from unmentioned to the <strong>named recommendation</strong>, in <strong>74 days</strong>.</p>
+          <div class="proofcard__mini">
+            <div class="proofcard__mini-row"><span>ChatGPT</span><span class="proofcard__mini-track"><span style="--w:82%"></span></span></div>
+            <div class="proofcard__mini-row"><span>Perplexity</span><span class="proofcard__mini-track"><span style="--w:67%"></span></span></div>
+            <div class="proofcard__mini-row"><span>Gemini</span><span class="proofcard__mini-track"><span style="--w:55%"></span></span></div>
+          </div>
+        </article>
+
+        <article class="proofcard proofcard--quote">
+          <p class="proofcard__quotemark">"</p>
+          <p class="proofcard__quotetext">In month two a VP of Finance opened with "ChatGPT sent me." That had never happened before. Now it is most of our first calls.</p>
+          <p class="proofcard__author">Managing Partner, boutique manufacturing search firm</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ WHO IT IS FOR (§7) ============ -->
+    <section class="fit" id="fit">
+      <div class="fit__head">
+        <span class="tag tag--azure">
+          <span class="tag__dot"></span>
+          <span class="tag__text">Who it is for</span>
+        </span>
+        <h2>Built for a specific kind of firm.</h2>
+      </div>
+
+      <div class="fit__grid">
+        <div class="fit__col fit__col--yes">
+          <h3>It is a fit if</h3>
+          <ul>
+            <li>You win on specialty, not price.</li>
+            <li>You place in defined roles and markets.</li>
+            <li>You have real proof that just is not structured anywhere AI can find it.</li>
+          </ul>
+        </div>
+        <div class="fit__col fit__col--no">
+          <h3>It is not a fit if</h3>
+          <ul>
+            <li>You are a generalist competing on price.</li>
+            <li>You want a one-time project then silence. This compounds, it is quarterly.</li>
+            <li>You expect leads next week. First citations land in weeks, real pipeline around month three.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROOF-OF-WORK DASHBOARD (§8) ============ -->
+    <section class="dash" id="dashboard">
+      <div class="dash__container">
+        <div class="dash__copy">
+          <span class="tag tag--azure">
+            <span class="tag__dot"></span>
+            <span class="tag__text">The receipt</span>
+          </span>
+          <h2>Watch yourself become the answer, week by week.</h2>
+          <p>You are not buying a dashboard, you are buying the result. This is just how you see it happen.</p>
+          <ul class="dash__list">
+            <li>Citation share by engine.</li>
+            <li>The exact queries you now own.</li>
+            <li>When a competitor takes your spot, and when we take it back.</li>
+            <li>Every inbound req we can trace to an AI answer.</li>
+          </ul>
+        </div>
+
+        <div class="dash__mock" aria-hidden="true">
+          <div class="dash__mock-head">
+            <span class="dash__mock-title">Citation share</span>
+            <span class="dash__mock-pill">Last 30 days</span>
+          </div>
+          <div class="dash__bars">
+            <div class="dash__bar"><span class="dash__bar-label">ChatGPT</span><span class="dash__bar-track"><span class="dash__bar-fill" style="--w:78%"></span></span><span class="dash__bar-val">78%</span></div>
+            <div class="dash__bar"><span class="dash__bar-label">Perplexity</span><span class="dash__bar-track"><span class="dash__bar-fill" style="--w:64%"></span></span><span class="dash__bar-val">64%</span></div>
+            <div class="dash__bar"><span class="dash__bar-label">Gemini</span><span class="dash__bar-track"><span class="dash__bar-fill" style="--w:52%"></span></span><span class="dash__bar-val">52%</span></div>
+            <div class="dash__bar"><span class="dash__bar-label">Claude</span><span class="dash__bar-track"><span class="dash__bar-fill" style="--w:41%"></span></span><span class="dash__bar-val">41%</span></div>
+          </div>
+          <div class="dash__queries">
+            <span class="dash__queries-label">Queries you now own</span>
+            <span class="dash__q">manufacturing finance recruiters, Chicago <em>owned</em></span>
+            <span class="dash__q">interim CFO search, Rockford <em>owned</em></span>
+            <span class="dash__q">plant controller staffing, Joliet <em>contested</em></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRICING (§9) ============ -->
+    <section class="pricing" id="pricing">
+      <div class="pricing__head">
+        <span class="tag tag--azure">
+          <span class="tag__dot"></span>
+          <span class="tag__text">Pricing</span>
+        </span>
+        <h2>Straightforward pricing. One firm per market.</h2>
+        <p>Plans are built around the number of specialties and markets you want to own. Most firms start in the low four figures a month. We size it on the demo, and you know the number before you leave the call.</p>
+      </div>
+
+      <div class="pricing__grid">
+        <article class="plan">
+          <h3 class="plan__name">Foundation</h3>
+          <p class="plan__for">One specialty, one market.</p>
+          <p class="plan__price"><span class="plan__from">from</span> $1,500<span class="plan__per">/mo</span></p>
+          <ul class="plan__features">
+            <li>Signal Core mapping</li>
+            <li>Role and location pages</li>
+            <li>Citation tracking, one market</li>
+          </ul>
+          <button class="btn-hole" data-open-modal="demo-modal"><span class="btn-hole__face">Book a demo<span class="btn-hole__arrow">→</span></span></button>
+        </article>
+
+        <article class="plan plan--featured">
+          <span class="plan__badge">Most firms start here</span>
+          <h3 class="plan__name">Growth</h3>
+          <p class="plan__for">A few specialties across your core cities.</p>
+          <p class="plan__price"><span class="plan__from">from</span> $3,500<span class="plan__per">/mo</span></p>
+          <ul class="plan__features">
+            <li>Everything in Foundation</li>
+            <li>Multi-market coverage</li>
+            <li>Trust Layer signal building</li>
+            <li>Weekly citation reporting</li>
+          </ul>
+          <button class="btn-solid btn-solid--block" data-open-modal="demo-modal">Book a demo<span class="btn-solid__arrow">→</span></button>
+        </article>
+
+        <article class="plan">
+          <h3 class="plan__name">Authority</h3>
+          <p class="plan__for">Own your category across every market you serve.</p>
+          <p class="plan__price">Custom</p>
+          <ul class="plan__features">
+            <li>Everything in Growth</li>
+            <li>Full six-agent coverage</li>
+            <li>Dedicated strategist</li>
+            <li>Priority record defense</li>
+          </ul>
+          <button class="btn-hole" data-open-modal="demo-modal"><span class="btn-hole__face">Book a demo<span class="btn-hole__arrow">→</span></span></button>
+        </article>
+      </div>
+
+      <div class="pricing__lock">
+        <span class="pricing__lock-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="9.5" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+        <p><strong>Territory lock.</strong> Once you claim your specialty in your city, we do not sign a direct competitor in that market.</p>
+      </div>
+    </section>
+
+    <!-- ============ GUARANTEE (§10) ============ -->
+    <section class="guarantee">
+      <div class="guarantee__inner">
+        <span class="tag tag--mint"><span class="tag__text">The guarantee</span></span>
+        <h2>If AI does not name you in 90 days, you do not pay for the next quarter.</h2>
+        <p>Contracts are quarterly, never annual. If your firm is not cited on your target queries within 90 days, we work the next quarter free until you are. The risk is ours, because we have seen it work.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ (§11) ============ -->
     <section class="faq" id="faq">
       <div class="faq__intro">
         <h2>Have questions?<br>We got answers</h2>
@@ -533,17 +644,17 @@
             <span class="faq__toggle"></span>
           </button>
           <div class="faq__answer">
-            <p>SEO competes for a position on a results page. AEO competes to be the firm an AI engine names when a hiring manager asks it a question. There is no list of ten blue links in that answer — there is one recommendation and a handful of citations. vouchaeo structures your specialties, placements, locations, and proof points so engines like ChatGPT, Gemini, Perplexity, and Claude can retrieve them, trust them, and cite them as the answer.</p>
+            <p>SEO competes for a position on a results page. AEO competes to be the firm an AI engine names when a hiring manager asks it a question. There is no list of ten blue links in that answer, there is one recommendation and a handful of citations. Laud structures your specialties, placements, locations, and proof points so engines like ChatGPT, Gemini, Perplexity, and Claude can retrieve them, trust them, and cite them as the answer.</p>
           </div>
         </div>
 
         <div class="faq__item">
           <button class="faq__top" aria-expanded="false">
-            <span class="faq__q">We already pay an SEO agency. Does vouchaeo replace them?</span>
+            <span class="faq__q">We already pay an SEO agency. Does Laud replace them?</span>
             <span class="faq__toggle"></span>
           </button>
           <div class="faq__answer">
-            <p>For most staffing firms, yes. Backlink retainers, blog volume programs, and keyword ranking reports are all optimizing for a channel whose click-through rate is falling as AI summarizes the web. vouchaeo replaces that spend with structured authority pages, verifiable proof data, and citation coverage across the engines that now sit in front of your buyers. Keep your SEO agency if they own paid, brand, or technical infrastructure — we work alongside all of it.</p>
+            <p>For most staffing firms, yes. Backlink retainers, blog volume programs, and keyword position reports are all optimizing for a channel whose click-through rate is falling as AI summarizes the web. Laud replaces that spend with structured authority pages, verifiable proof data, and citation coverage across the engines that now sit in front of your buyers. Keep your SEO agency if they own paid, brand, or technical infrastructure. We work alongside all of it.</p>
           </div>
         </div>
 
@@ -573,7 +684,7 @@
             <span class="faq__toggle"></span>
           </button>
           <div class="faq__answer">
-            <p>No. vouchaeo layers onto the site you already run — WordPress, Webflow, HubSpot, Bullhorn-connected career sites, or a custom build. The Launchpad agent publishes structured pages into your existing domain and handles the schema, indexing parameters, and internal linking. Your brand, your design, your domain authority. Nothing gets torn down.</p>
+            <p>No. Laud layers onto the site you already run, whether that is WordPress, Webflow, HubSpot, a Bullhorn-connected career site, or a custom build. The Launchpad agent publishes structured pages into your existing domain and handles the schema, indexing parameters, and internal linking. Your brand, your design, your domain authority. Nothing gets torn down.</p>
           </div>
         </div>
 
@@ -586,18 +697,48 @@
             <p>You get a live dashboard tracking citation share by engine, the queries you are being named on, competitor displacement, and inbound reqs attributed to AI-sourced sessions. Contracts are quarterly, not annual. If you are not cited on your target query set within 90 days, we work the next quarter at no charge until you are.</p>
           </div>
         </div>
+
+        <div class="faq__item">
+          <button class="faq__top" aria-expanded="false">
+            <span class="faq__q">What does it cost?</span>
+            <span class="faq__toggle"></span>
+          </button>
+          <div class="faq__answer">
+            <p>Plans are built around the specialties and markets you want to own. Most firms start in the low four figures a month. We size it on the demo, no pressure, and you know the number before you leave the call.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__top" aria-expanded="false">
+            <span class="faq__q">Do you need access to our website?</span>
+            <span class="faq__toggle"></span>
+          </button>
+          <div class="faq__answer">
+            <p>We publish into your existing site with scoped access, and nothing goes live without your sign-off. Your brand, your domain, your rules. We add pages, we do not touch what already works.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__top" aria-expanded="false">
+            <span class="faq__q">Is this software or people?</span>
+            <span class="faq__toggle"></span>
+          </button>
+          <div class="faq__answer">
+            <p>Both. The agents do the heavy lifting at a speed no human team can match. A real strategist owns your account, reviews everything, and is who you email when you have a question.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ CLOSURE CTA ============ -->
+    <!-- ============ FINAL CTA (§12) ============ -->
     <section class="closure" id="cta">
       <img class="closure__bg" src="assets/cta-bg.png" alt="">
       <div class="closure__container">
         <div class="closure__headline">
-          <h2>Ready to turn your site<br>into an inbound engine?</h2>
-          <p>We will show you where your staffing firm stands today, what hiring managers are searching for, and what your site needs to generate more inbound reqs from search.</p>
+          <h2>Find out what AI says about your firm today.</h2>
+          <p>We will show you where you stand right now, the exact questions your buyers are asking AI, and what it would take to be the answer. Fifteen minutes, and you will leave knowing more than most of your competitors.</p>
         </div>
-        <button class="btn-hole btn-hole--wide" data-open-modal="demo-modal"><span class="btn-hole__face">Book a Demo<span class="btn-hole__arrow">→</span></span></button>
+        <button class="btn-hole btn-hole--wide" data-open-modal="checker-modal"><span class="btn-hole__face">See if AI recommends you<span class="btn-hole__arrow">→</span></span></button>
       </div>
     </section>
 
@@ -611,7 +752,7 @@
 
       <div class="footer__top">
         <div class="footer__brand">
-          <a class="footer__wordmark" href="#">vouchaeo</a>
+          <a class="footer__wordmark" href="#">Laud</a>
           <p class="footer__tagline">Answer Engine Optimization that makes AI recommend your staffing firm.</p>
 
           <form class="newsletter" action="#" method="post">
@@ -626,20 +767,20 @@
 
         <nav class="footer__nav">
           <div class="footer__col">
-            <h4>Platform</h4>
+            <h4>Product</h4>
             <ul>
-              <li><a href="#agents">The Six Agents</a></li>
-              <li><a href="#aeo">AEO vs SEO</a></li>
-              <li><a href="#" data-open-modal="demo-modal">Book a demo</a></li>
+              <li><a href="#how">How it works</a></li>
+              <li><a href="#agents">The six agents</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#" data-open-modal="checker-modal">Check your firm</a></li>
             </ul>
           </div>
           <div class="footer__col">
             <h4>Resources</h4>
             <ul>
-              <li><a href="#" data-open-modal="demo-modal">Free AI visibility audit</a></li>
+              <li><a href="#proof">Proof</a></li>
               <li><a href="#faq">FAQ</a></li>
-              <li><a href="#">Case studies</a></li>
-              <li><a href="#">Blog</a></li>
+              <li><a href="#" data-open-modal="demo-modal">Book a demo</a></li>
             </ul>
           </div>
           <div class="footer__col">
@@ -647,7 +788,7 @@
             <ul>
               <li><a href="#">About</a></li>
               <li><a href="#">Careers</a></li>
-              <li><a href="mailto:hey@vouchaeo.com">hey@vouchaeo.com</a></li>
+              <li><a href="mailto:hey@getlaude.com">hey@getlaude.com</a></li>
             </ul>
           </div>
           <div class="footer__col">
@@ -662,7 +803,7 @@
       </div>
 
       <div class="footer__bottom">
-        <p class="footer__copyright">© 2026 vouchaeo. All rights reserved.</p>
+        <p class="footer__copyright">© 2026 Laud. All rights reserved.</p>
         <div class="footer__legal">
           <button data-open-modal="privacy-modal">Privacy Policy</button>
           <button data-open-modal="terms-modal">Terms &amp; Conditions</button>
@@ -670,13 +811,101 @@
         </div>
       </div>
 
-      <div class="footer__mark" aria-hidden="true"><span>vouchaeo</span></div>
+      <div class="footer__mark" aria-hidden="true"><span>Laud</span></div>
     </div>
   </footer>
 
   <!-- ==================================================================
        MODALS
        ================================================================== -->
+
+  <!-- AI visibility checker — popup -->
+  <div class="modal" id="checker-modal" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__panel modal__panel--checker" role="dialog" aria-modal="true" aria-labelledby="checker-modal-title">
+      <button class="modal__close" data-close-modal aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none"><path d="m3 3 10 10M13 3 3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+
+      <div class="ck" id="visibility-check">
+
+        <!-- ---------- 1. FORM ---------- -->
+        <div class="ck__view" data-view="form">
+          <span class="tag tag--azure"><span class="tag__dot"></span><span class="tag__text">Live AI check</span></span>
+          <h2 id="checker-modal-title" class="ck__title">See if AI recommends your firm</h2>
+          <p class="ck__sub">We ask ChatGPT, Perplexity, Gemini, and Claude what buyers in your market are told, then check whether your firm shows up in the answer.</p>
+
+          <form class="ck__form" id="visibility-form" novalidate>
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="ck__fields">
+              <label class="field field--full">
+                <span class="field__label">Firm name<span class="req">*</span></span>
+                <input type="text" name="firm" autocomplete="organization" placeholder="Meridian Search Partners" required>
+              </label>
+              <label class="field field--full">
+                <span class="field__label">Website<span class="req">*</span> <span class="field__hint">so we can spot your domain in the sources</span></span>
+                <input type="text" name="website" inputmode="url" placeholder="meridianpartners.co" required>
+              </label>
+              <label class="field">
+                <span class="field__label">Specialty<span class="req">*</span></span>
+                <input type="text" name="specialty" placeholder="manufacturing finance" required>
+              </label>
+              <label class="field">
+                <span class="field__label">City / market<span class="req">*</span></span>
+                <input type="text" name="city" placeholder="Chicago" required>
+              </label>
+              <label class="field field--full">
+                <span class="field__label">Top competitor <span class="opt">(optional)</span></span>
+                <input type="text" name="competitor" placeholder="a firm you keep losing to">
+              </label>
+              <label class="field field--full">
+                <span class="field__label">Work email<span class="req">*</span></span>
+                <input type="email" name="email" autocomplete="email" placeholder="you@yourfirm.com" required>
+              </label>
+            </div>
+            <button class="btn-solid btn-solid--lg btn-solid--block" type="submit">Run the check<span class="btn-solid__arrow">→</span></button>
+            <span class="ck__hint">Free. We run the queries live. No sales pitch until you ask for one.</span>
+            <p class="ck__error" data-error></p>
+          </form>
+        </div>
+
+        <!-- ---------- 2. LOADING ---------- -->
+        <div class="ck__view ck__loading" data-view="loading" hidden>
+          <div class="ck__radar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <h3 class="ck__loading-title">Asking the engines about your market…</h3>
+          <p class="ck__loading-q">“best <span data-q-specialty>your specialty</span> recruiters in <span data-q-city>your city</span>”</p>
+          <ul class="ck__engines" id="ck-engine-status">
+            <li data-engine="ChatGPT"><img src="assets/logo-openai.svg" alt=""><span class="ck__engine-name">ChatGPT</span><span class="ck__engine-state" data-state>Querying…</span></li>
+            <li data-engine="Perplexity"><img src="assets/logo-perplexity.svg" alt=""><span class="ck__engine-name">Perplexity</span><span class="ck__engine-state" data-state>Querying…</span></li>
+            <li data-engine="Gemini"><img src="assets/logo-gemini.svg" alt=""><span class="ck__engine-name">Gemini</span><span class="ck__engine-state" data-state>Querying…</span></li>
+            <li data-engine="Claude"><img src="assets/logo-claude.svg" alt=""><span class="ck__engine-name">Claude</span><span class="ck__engine-state" data-state>Querying…</span></li>
+          </ul>
+        </div>
+
+        <!-- ---------- 3. RESULTS ---------- -->
+        <div class="ck__view ck__results" data-view="results" hidden>
+          <div class="vr-head">
+            <span class="tag tag--azure"><span class="tag__dot"></span><span class="tag__text">Your live check</span></span>
+            <h3 class="vr-head__title">AI visibility for <span data-r-firm>your firm</span></h3>
+            <p class="vr-head__q">Tested on <em>“best <span data-r-specialty>specialty</span> recruiters in <span data-r-city>city</span>”</em></p>
+            <div class="vr-meter" data-meter>
+              <span class="vr-meter__track"><span class="vr-meter__fill" data-meter-fill></span></span>
+              <span class="vr-meter__label"><strong data-score-count>0</strong> of 4 engines name you</span>
+            </div>
+          </div>
+
+          <ul class="vr-list" id="ck-result-list"></ul>
+
+          <div class="vr-cta">
+            <p data-cta-line>Want the queries you are missing, and a plan to own them?</p>
+            <button class="btn-solid btn-solid--block" data-open-modal="demo-modal">Book a 15-minute demo<span class="btn-solid__arrow">→</span></button>
+            <button class="vr-again" type="button" data-check-reset>Check another firm</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- Book a demo — multi-step -->
   <div class="modal" id="demo-modal" hidden>
@@ -861,10 +1090,10 @@
         <p class="doc__meta">Last updated 21 July 2026</p>
 
         <h3>1. What we collect</h3>
-        <p>When you request a demo we collect your name, work email, phone number if you give it, your agency name and website, team size, role, and how you found us. When you browse vouchaeo.com we collect standard technical data: IP address, browser and device type, referring URL, and pages viewed.</p>
+        <p>When you request a demo we collect your name, work email, phone number if you give it, your agency name and website, team size, role, and how you found us. When you browse getlaude.com we collect standard technical data: IP address, browser and device type, referring URL, and pages viewed.</p>
 
         <h3>2. Why we collect it</h3>
-        <p>To prepare and run your demo, to build your AI visibility snapshot, to provide the vouchaeo platform, to send service and product updates you have asked for, and to improve the product. We do not sell your personal data, and we do not share it with advertisers.</p>
+        <p>To prepare and run your demo, to build your AI visibility snapshot, to provide the Laud platform, to send service and product updates you have asked for, and to improve the product. We do not sell your personal data, and we do not share it with advertisers.</p>
 
         <h3>3. Your agency’s content</h3>
         <p>Pages, schema, and proof data that our agents generate on your behalf remain your property. We process them only to deliver the service and to measure citation coverage. We do not use your proprietary placement data to train third-party models.</p>
@@ -879,10 +1108,10 @@
         <p>Demo request data is kept for 24 months from your last interaction with us. Platform data is kept for the life of your contract plus 90 days, after which it is deleted or irreversibly anonymised.</p>
 
         <h3>7. Your rights</h3>
-        <p>You can ask us to access, correct, export, or delete your personal data, and you can object to processing or withdraw consent at any time. Email <a href="mailto:privacy@vouchaeo.com">privacy@vouchaeo.com</a> and we will respond within 30 days.</p>
+        <p>You can ask us to access, correct, export, or delete your personal data, and you can object to processing or withdraw consent at any time. Email <a href="mailto:privacy@getlaude.com">privacy@getlaude.com</a> and we will respond within 30 days.</p>
 
         <h3>8. Contact</h3>
-        <p>vouchaeo — <a href="mailto:privacy@vouchaeo.com">privacy@vouchaeo.com</a>. If you are in the EEA or UK you also have the right to lodge a complaint with your local supervisory authority.</p>
+        <p>Laud — <a href="mailto:privacy@getlaude.com">privacy@getlaude.com</a>. If you are in the EEA or UK you also have the right to lodge a complaint with your local supervisory authority.</p>
       </div>
     </div>
   </div>
@@ -900,13 +1129,13 @@
         <p class="doc__meta">Last updated 21 July 2026</p>
 
         <h3>1. Agreement</h3>
-        <p>These terms govern your use of the vouchaeo website and platform. By requesting a demo or using the platform you agree to them. If you are agreeing on behalf of an agency, you confirm you have authority to bind it.</p>
+        <p>These terms govern your use of the Laud website and platform. By requesting a demo or using the platform you agree to them. If you are agreeing on behalf of an agency, you confirm you have authority to bind it.</p>
 
         <h3>2. The service</h3>
-        <p>vouchaeo deploys automated agents that build structured authority pages, coordinate external citations, and monitor how AI answer engines describe your firm. Deliverables and volumes are set out in your order form.</p>
+        <p>Laud deploys automated agents that build structured authority pages, coordinate external citations, and monitor how AI answer engines describe your firm. Deliverables and volumes are set out in your order form.</p>
 
         <h3>3. What we do not promise</h3>
-        <p>AI answer engines are third-party systems whose ranking and citation behaviour we do not control and cannot guarantee. We commit to the workstreams and reporting in your order form, not to a specific position in any engine’s output. Where a coverage commitment is offered, it is stated explicitly in writing on the order form.</p>
+        <p>AI answer engines are third-party systems whose selection and citation behaviour we do not control and cannot guarantee. We commit to the workstreams and reporting in your order form, not to a specific position in any engine’s output. Where a coverage commitment is offered, it is stated explicitly in writing on the order form.</p>
 
         <h3>4. Your responsibilities</h3>
         <p>You are responsible for the accuracy of the proof points, placement data, and claims you supply, for holding the rights to any content you give us, and for keeping account credentials secure. You will not use the platform to publish misleading claims about placements, outcomes, or credentials.</p>
@@ -915,7 +1144,7 @@
         <p>Subscriptions run quarterly and renew automatically unless cancelled at least 30 days before the renewal date. Fees are invoiced in advance and are non-refundable except where a written coverage commitment is not met.</p>
 
         <h3>6. Intellectual property</h3>
-        <p>You own the content published to your domain. We own the vouchaeo platform, agents, models, and methodology, including any improvements derived from aggregated and anonymised usage.</p>
+        <p>You own the content published to your domain. We own the Laud platform, agents, models, and methodology, including any improvements derived from aggregated and anonymised usage.</p>
 
         <h3>7. Liability</h3>
         <p>To the extent permitted by law, neither party is liable for indirect or consequential loss, and our total liability in any 12-month period is capped at the fees you paid in that period.</p>
@@ -924,7 +1153,7 @@
         <p>Either party may terminate for material breach that is not cured within 30 days of written notice. On termination we will export your data on request and delete it within 90 days.</p>
 
         <h3>9. Contact</h3>
-        <p>Questions about these terms: <a href="mailto:legal@vouchaeo.com">legal@vouchaeo.com</a>.</p>
+        <p>Questions about these terms: <a href="mailto:legal@getlaude.com">legal@getlaude.com</a>.</p>
       </div>
     </div>
   </div>
@@ -939,7 +1168,7 @@
       <div class="doc">
         <span class="tag tag--azure"><span class="tag__dot"></span><span class="tag__text">Cookies</span></span>
         <h2 id="cookie-title">Cookie Settings</h2>
-        <p class="doc__meta">Choose what vouchaeo may store on this device.</p>
+        <p class="doc__meta">Choose what Laud may store on this device.</p>
 
         <div class="cookie-opt">
           <div>

@@ -6,3 +6,8 @@
 
 # pre-redesign snapshot of the old site
 .backup-pre-figma/
+
+# secrets — API keys live in Vercel env vars, never in the repo
+.env
+.env.*
+.vercel
