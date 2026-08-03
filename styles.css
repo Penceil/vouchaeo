@@ -3111,7 +3111,7 @@ body.is-locked { overflow: hidden; }
    Live AI visibility check popup (form -> loading -> results)
    ========================================================================== */
 
-.modal__panel--checker { max-width: 620px; }
+.modal__panel--checker { max-width: 640px; }
 .ck { display: flex; flex-direction: column; }
 .ck__view { padding: 34px 40px 40px; }
 .ck__view[hidden] { display: none; }
@@ -3192,7 +3192,40 @@ body.is-locked { overflow: hidden; }
 .vr-meter__label { flex: none; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.3px; color: var(--black-60); white-space: nowrap; }
 .vr-meter__label strong { color: var(--black); }
 
+/* engine tabs (All + one per engine) */
+.vr-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.vr-tabs::-webkit-scrollbar { display: none; }
+.vr-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  padding: 8px 14px;
+  border: 1px solid var(--black-8);
+  border-radius: 999px;
+  background: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black-60);
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.vr-tab:hover { border-color: var(--black-20); color: var(--black); }
+.vr-tab.is-active { background: var(--black); border-color: var(--black); color: var(--white); }
+.vr-tab__dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--black-24); }
+.vr-tab__dot.is-yes { background: #0a9a68; }
+.vr-tab__dot.is-no { background: var(--coral); }
+.vr-tab__dot.is-skip { background: var(--black-20); }
+
 .vr-list { display: flex; flex-direction: column; gap: 12px; }
+.vr[hidden] { display: none; }
 .vr {
   padding: 16px 18px;
   border: 1px solid var(--black-8);

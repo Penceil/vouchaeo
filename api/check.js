@@ -179,10 +179,26 @@ async function askPerplexity(query) {
   return { engine: 'Perplexity', configured: true, answer, sources };
 }
 
+/* Gemini: native Google grounding first (truest to Google), but if that key
+   is missing or its grounding quota is exhausted, fall back to OpenRouter so
+   the engine still returns a real result on the OpenRouter balance. */
 async function askGemini(query) {
   const key = process.env.GEMINI_API_KEY;
-  if (!key) return { engine: 'Gemini', configured: false };
+  if (key) {
+    try {
+      return await askGeminiNative(key, query);
+    } catch (err) {
+      if (!process.env.OPENROUTER_API_KEY) throw err;
+      // native failed (e.g. quota) -> fall through to OpenRouter
+    }
+  }
+  if (process.env.OPENROUTER_API_KEY) {
+    return askOpenRouter('Gemini', process.env.OPENROUTER_GEMINI_MODEL || 'google/gemini-flash-latest', query);
+  }
+  return { engine: 'Gemini', configured: false };
+}
 
+async function askGeminiNative(key, query) {
   const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
   const r = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,

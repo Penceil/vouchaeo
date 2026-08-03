@@ -605,6 +605,7 @@ const Modals = (function initModals() {
     list.innerHTML = '';
     data.engines.forEach((e) => {
       const li = document.createElement('li');
+      li.dataset.engine = e.engine;
 
       if (e.configured === false) {
         li.className = 'vr vr--skipped';
@@ -647,7 +648,36 @@ const Modals = (function initModals() {
       list.appendChild(li);
     });
 
+    buildTabs(data.engines);
     show('results');
+  }
+
+  // engine tabs at the top of the results: All + one per engine, click to focus
+  const tabsEl = document.getElementById('ck-tabs');
+  function buildTabs(engines) {
+    if (!tabsEl) return;
+    const dotFor = (e) => e.configured === false ? 'is-skip' : e.named ? 'is-yes' : 'is-no';
+
+    const mkTab = (key, label, dotClass) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'vr-tab';
+      b.dataset.tab = key;
+      b.innerHTML = `${dotClass ? `<span class="vr-tab__dot ${dotClass}"></span>` : ''}<span>${esc(label)}</span>`;
+      b.addEventListener('click', () => selectTab(key));
+      return b;
+    };
+
+    tabsEl.innerHTML = '';
+    tabsEl.appendChild(mkTab('all', 'All', ''));
+    engines.forEach((e) => tabsEl.appendChild(mkTab(e.engine, e.engine, dotFor(e))));
+    selectTab('all');
+  }
+
+  function selectTab(key) {
+    [...tabsEl.children].forEach((t) => t.classList.toggle('is-active', t.dataset.tab === key));
+    [...list.children].forEach((li) => { li.hidden = !(key === 'all' || li.dataset.engine === key); });
+    list.closest('.ck__results')?.scrollTo({ top: 0 });
   }
 
   function esc(s) {
