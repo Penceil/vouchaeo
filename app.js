@@ -574,6 +574,9 @@ const Modals = (function initModals() {
   const cleanDomain = (url) => String(url || '').trim().toLowerCase()
     .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
 
+  const slug = (v) => String(v || '').trim().toLowerCase()
+    .replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '').slice(0, 22) || 'firm';
+
   function playEngineStates() {
     // staged "querying -> done" ticks while the request is in flight
     engineRows.forEach((row, i) => {
@@ -625,16 +628,35 @@ const Modals = (function initModals() {
         ? '<span class="tag tag--mint"><span class="tag__text">Names you</span></span>'
         : '<span class="tag tag--coral"><span class="tag__text">Not named</span></span>';
 
-      const cited = `<span class="vr__flag ${e.cited ? 'is-yes' : 'is-no'}">${e.cited ? 'Your site cited as a source' : 'Your site not cited'}</span>`;
+      // quick facts row: position + site-cited
+      const facts = [];
+      if (e.named && e.position) facts.push(`<span class="vr__flag is-yes">Listed at position #${e.position}</span>`);
+      facts.push(`<span class="vr__flag ${e.cited ? 'is-yes' : 'is-no'}">${e.cited ? 'Your site cited as a source' : 'Your site not cited'}</span>`);
+      if (e.competitorNamed) facts.push(`<span class="vr__flag is-no">Your competitor is named</span>`);
 
+      // firm names AI listed
       const comps = (e.competitors && e.competitors.length)
-        ? `<div class="vr__comp"><span class="vr__comp-label">Points to instead</span>${
-            e.competitors.slice(0, 3).map((c) => `<span class="vr__chip">${esc(c)}</span>`).join('')
+        ? `<div class="vr__comp"><span class="vr__comp-label">AI named</span>${
+            e.competitors.slice(0, 6).map((c) => `<span class="vr__chip">${esc(c)}</span>`).join('')
           }</div>`
         : '';
 
-      const excerpt = e.answer
-        ? `<p class="vr__excerpt">${esc(e.answer).slice(0, 200)}${e.answer.length > 200 ? '…' : ''}</p>`
+      // sources it cited
+      const srcs = (e.sources && e.sources.length)
+        ? `<div class="vr__comp"><span class="vr__comp-label">Sources cited</span>${
+            e.sources.slice(0, 8).map((s) => `<a class="vr__chip vr__chip--src" href="https://${esc(s)}" target="_blank" rel="noopener">${esc(s)}</a>`).join('')
+          }</div>`
+        : '';
+
+      // full answer, collapsed with a show-more toggle
+      const answer = String(e.answer || '');
+      const long = answer.length > 240;
+      const excerpt = answer
+        ? `<div class="vr__answer">
+             <span class="vr__answer-label">What it said</span>
+             <p class="vr__excerpt${long ? ' is-clamped' : ''}" data-answer>${esc(answer)}</p>
+             ${long ? '<button type="button" class="vr__more" data-answer-toggle>Show more</button>' : ''}
+           </div>`
         : '';
 
       li.innerHTML = `
@@ -643,13 +665,48 @@ const Modals = (function initModals() {
           <span class="vr__engine">${esc(e.engine)}</span>
           ${statusTag}
         </div>
-        <div class="vr__flags">${cited}</div>
-        ${comps}${excerpt}`;
+        <div class="vr__flags">${facts.join('')}</div>
+        ${comps}${srcs}${excerpt}`;
       list.appendChild(li);
     });
 
+    // per-card "show more" for the answer
+    list.querySelectorAll('[data-answer-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const p = btn.previousElementSibling;
+        const clamped = p.classList.toggle('is-clamped');
+        btn.textContent = clamped ? 'Show more' : 'Show less';
+      });
+    });
+
+    renderInsights(data);
     buildTabs(data.engines);
     show('results');
+  }
+
+  // overall insights: which firms AI named most, and how the user's competitor did
+  function renderInsights(data) {
+    const box = document.getElementById('ck-insights');
+    if (!box) return;
+    box.innerHTML = '';
+
+    const leaderboard = data.summary?.leaderboard
+      || Object.entries(data.engines.flatMap((e) => e.competitors || [])
+        .reduce((m, n) => (m[n] = (m[n] || 0) + 1, m), {}))
+        .sort((a, b) => b[1] - a[1]).slice(0, 6).map(([name, count]) => ({ name, count }));
+
+    if (leaderboard && leaderboard.length) {
+      const chips = leaderboard.map((c) =>
+        `<span class="vr__chip">${esc(c.name)}${c.count > 1 ? ` <em>×${c.count}</em>` : ''}</span>`).join('');
+      box.insertAdjacentHTML('beforeend',
+        `<div class="vr__comp"><span class="vr__comp-label">AI names most</span>${chips}</div>`);
+    }
+
+    const cNamed = data.summary?.competitorNamedCount;
+    if (data.competitor && typeof cNamed === 'number') {
+      box.insertAdjacentHTML('beforeend',
+        `<p class="vr-insights__line">Your competitor <strong>${esc(data.competitor)}</strong> is named by ${cNamed} of ${data.engines.length} engines.</p>`);
+    }
   }
 
   // engine tabs at the top of the results: All + one per engine, click to focus
@@ -694,13 +751,20 @@ const Modals = (function initModals() {
     const engines = ['ChatGPT', 'Perplexity', 'Gemini', 'Claude'].map((name, i) => ({
       engine: name, logo: logos[name], configured: true,
       named: i === 3, cited: i === 3,
-      competitors: i === 3 ? [] : [rival, 'Kforce', 'Adecco'],
+      position: i === 3 ? 1 : null,
+      competitors: i === 3 ? [rival, 'Kforce'] : [rival, 'Kforce', 'Adecco'],
+      competitorNamed: !!competitor,
+      sources: i === 3 ? [`${slug(firm)}.com`, 'linkedin.com'] : ['linkedin.com', `${slug(rival)}.com`, 'indeed.com'],
       answer: i === 3
-        ? `For ${specialty} recruitment in ${city}, ${firm} is frequently cited as the specialist to contact.`
-        : `For ${specialty} recruiters in ${city}, the firms usually surfaced are ${rival} and other national agencies.`,
+        ? `For ${specialty} recruitment in ${city}, ${firm} is frequently cited as the specialist to contact, with a strong local track record and verified placement data. Buyers looking for a boutique option in ${city} are often pointed to ${firm} first.`
+        : `For ${specialty} recruiters in ${city}, the firms usually surfaced are ${rival}, Kforce and Adecco. These are large national agencies with broad coverage rather than ${specialty} specialists, so the answer leans on well-known names and general directories.`,
       query: `best ${specialty} recruiters in ${city}`,
     }));
-    return { firm, domain: cleanDomain(website), specialty, city, engines, demo: true };
+    const leaderboard = [{ name: rival, count: 4 }, { name: 'Kforce', count: 4 }, { name: 'Adecco', count: 3 }];
+    return {
+      firm, domain: cleanDomain(website), specialty, city, competitor, engines, demo: true,
+      summary: { namedCount: 1, total: 4, competitorNamedCount: competitor ? 4 : null, leaderboard },
+    };
   }
 
   form.addEventListener('submit', async (event) => {

@@ -48,6 +48,7 @@ module.exports = async (req, res) => {
   const website = String(body.website || '').trim();
   const specialty = String(body.specialty || '').trim();
   const city = String(body.city || '').trim();
+  const competitor = String(body.competitor || '').trim();
 
   if (body.botcheck) { res.status(200).json({ ok: true }); return; }        // honeypot
   if (!firm || !specialty || !city) {
@@ -67,10 +68,31 @@ module.exports = async (req, res) => {
   ]);
 
   const engines = [chatgpt, perplexity, gemini, claude].map((r) =>
-    scoreEngine(r, firm, domain)
+    scoreEngine(r, firm, domain, competitor)
   );
 
-  res.status(200).json({ firm, domain, specialty, city, query: primary, engines });
+  // aggregate: which firm names AI surfaced most across engines (share of voice)
+  const tally = {};
+  for (const e of engines) {
+    for (const name of e.competitors || []) {
+      const k = name.trim();
+      if (k) tally[k] = (tally[k] || 0) + 1;
+    }
+  }
+  const leaderboard = Object.entries(tally)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name, count]) => ({ name, count }));
+
+  const namedCount = engines.filter((e) => e.named).length;
+  const competitorNamedCount = competitor ? engines.filter((e) => e.competitorNamed).length : null;
+
+  res.status(200).json({
+    firm, domain, specialty, city, competitor,
+    query: primary,
+    engines,
+    summary: { namedCount, total: engines.length, competitorNamedCount, leaderboard },
+  });
 };
 
 /* ---------- query building + scoring ------------------------------------- */
@@ -83,27 +105,71 @@ function buildQueries(specialty, city) {
   ];
 }
 
-function scoreEngine(r, firm, domain) {
+function scoreEngine(r, firm, domain, competitor) {
   const base = { engine: r.engine, logo: LOGOS[r.engine] };
   if (!r.configured) return { ...base, configured: false };
   if (r.error) return { ...base, configured: true, error: true, answer: r.error };
 
   const answer = String(r.answer || '');
-  const sources = (r.sources || []).map(cleanDomain).filter(Boolean);
+  const sources = [...new Set((r.sources || []).map(cleanDomain).filter(Boolean))];
   const named = containsFirm(answer, firm);
   const cited = !!domain && sources.some((s) => s.includes(domain) || domain.includes(s));
-  const competitors = [...new Set(sources.filter((s) => !domain || (!s.includes(domain) && !domain.includes(s))))];
+  const position = named ? findPosition(answer, firm) : null;
+  const competitors = extractNamedFirms(answer, firm).slice(0, 6);
+  const competitorNamed = !!competitor && containsFirm(answer, competitor);
 
-  return { ...base, configured: true, named, cited, answer: trimText(answer), sources, competitors };
+  return {
+    ...base,
+    configured: true,
+    named,
+    cited,
+    position,
+    competitors,          // firm names AI listed in the answer
+    competitorNamed,      // whether the user's named competitor showed up
+    sources,              // cited source domains
+    answer: trimText(answer, 900),
+  };
 }
 
 function containsFirm(text, firm) {
   const t = text.toLowerCase();
   const f = firm.toLowerCase().trim();
+  if (!f) return false;
   if (t.includes(f)) return true;
   // also try the firm without a trailing legal/word suffix (e.g. "... Partners", "... LLC")
   const core = f.replace(/\s+(partners|group|search|staffing|recruiting|recruitment|associates|llc|inc|co|company)\.?$/i, '').trim();
   return core.length > 3 && t.includes(core);
+}
+
+// pull the firm names an answer lists — markdown bold and numbered/bulleted items
+function extractNamedFirms(answer, firm) {
+  const names = new Set();
+  for (const m of answer.matchAll(/\*\*([^*\n]{2,60}?)\*\*/g)) names.add(m[1]);
+  for (const m of answer.matchAll(/^\s*(?:\d+[.)]|[-•])\s*\*?\*?([A-Z][A-Za-z0-9&.,'’\- ]{2,50}?)\*?\*?\s*(?:[-:–—(]|$)/gm)) names.add(m[1]);
+
+  const f = firm.toLowerCase();
+  const seen = new Set();
+  const out = [];
+  for (let raw of names) {
+    const name = raw.replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim().replace(/[:.,\-–—]+$/, '').trim();
+    const low = name.toLowerCase();
+    if (!name || name.length < 2 || low === f || low.includes(f) || f.includes(low)) continue;
+    if (/^(here|these|the|top|best|note|overall|key|other|for|when|if|they|it)\b/i.test(name)) continue;
+    if (seen.has(low)) continue;
+    seen.add(low);
+    out.push(name);
+  }
+  return out;
+}
+
+// if the firm sits in a numbered list, return its rank
+function findPosition(answer, firm) {
+  const f = firm.toLowerCase();
+  for (const line of answer.split('\n')) {
+    const m = line.match(/^\s*(\d+)[.)]/);
+    if (m && line.toLowerCase().includes(f)) return Number(m[1]);
+  }
+  return null;
 }
 
 /* ---------- engine callers ----------------------------------------------- */
@@ -239,7 +305,7 @@ function cleanDomain(url) {
     .trim();
 }
 
-function trimText(t) {
+function trimText(t, max = 320) {
   const s = String(t).replace(/\s+/g, ' ').trim();
-  return s.length > 320 ? `${s.slice(0, 320)}…` : s;
+  return s.length > max ? `${s.slice(0, max)}…` : s;
 }
