@@ -127,6 +127,9 @@ async function askOpenRouter(engine, model, query) {
       model,
       messages: [{ role: 'user', content: query }],
       plugins: [{ id: 'web' }],
+      // cap the output so OpenRouter only reserves a little credit per call
+      // (otherwise it reserves the model's full context and rejects on a low balance)
+      max_tokens: Number(process.env.OPENROUTER_MAX_TOKENS || 1024),
     }),
   });
   const data = await r.json();
@@ -147,7 +150,7 @@ const askOpenAI = (query) =>
   askOpenRouter('ChatGPT', process.env.OPENROUTER_CHATGPT_MODEL || 'openai/gpt-4o', query);
 
 const askClaude = (query) =>
-  askOpenRouter('Claude', process.env.OPENROUTER_CLAUDE_MODEL || 'anthropic/claude-3.5-sonnet', query);
+  askOpenRouter('Claude', process.env.OPENROUTER_CLAUDE_MODEL || 'anthropic/claude-sonnet-4.5', query);
 
 /* Perplexity: native Sonar if a key is set (cleanest citations), otherwise
    fall back to OpenRouter's perplexity/sonar so it still runs on one key. */
